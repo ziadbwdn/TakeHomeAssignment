@@ -40,7 +40,8 @@ Basic LFSRs are not cryptographically secure on their own because:
 For cryptographic applications, LFSRs are typically combined with non-linear components or other techniques to increase security.
 
 ----
-Assignment 2:  Django Warehouse System
+# Assignment 2:  Django Warehouse System
+
 # Overview
 This documentation provides a comprehensive guide to the Django Warehouse System, a REST API designed to simulate a stock management system for a distribution center. The application allows tracking of inventory items, recording purchase and sale transactions, and generating audit reports that track changes in stock levels over time.
 System Architecture
