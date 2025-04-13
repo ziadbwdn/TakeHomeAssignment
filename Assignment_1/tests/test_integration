@@ -1,0 +1,70 @@
+# tests/test_integration.py
+"""
+Integration tests for LFSR implementations.
+"""
+import unittest
+import sys
+from pathlib import Path
+
+# Add the src directory to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from src.basic_lfsr import BasicLFSR
+from src.general_lfsr import GeneralLFSR
+from src.utils import is_maximum_length, generate_sequence
+
+
+class TestIntegration(unittest.TestCase):
+    """Integration test cases for LFSR implementations."""
+    
+    def test_equivalence(self):
+        """Test that BasicLFSR and GeneralLFSR produce equivalent sequences."""
+        basic = BasicLFSR()
+        general = GeneralLFSR(size=4, taps=[3, 0], seed=0b0110)
+        
+        # Generate and compare sequences
+        length = 30  # More than a full period
+        basic_sequence = generate_sequence(basic, length)
+        
+        # Reset general LFSR to ensure same starting point
+        general.reset(0b0110)
+        general_sequence = generate_sequence(general, length)
+        
+        self.assertEqual(basic_sequence, general_sequence)
+    
+    def test_maximum_length(self):
+        """Test that the LFSRs produce maximum-length sequences."""
+        basic = BasicLFSR()
+        general = GeneralLFSR(size=4, taps=[3, 0], seed=0b0110)
+        
+        self.assertTrue(is_maximum_length(basic))
+        self.assertTrue(is_maximum_length(general))
+        
+        # Test with non-maximum configuration (x^4 + x^2 + 1 is not primitive)
+        non_max_lfsr = GeneralLFSR(size=4, taps=[3, 1], seed=0b0110)
+        self.assertFalse(is_maximum_length(non_max_lfsr))
+    
+    def test_different_sizes(self):
+        """Test compatibility between different LFSR sizes."""
+        # 4-bit LFSR
+        lfsr4 = GeneralLFSR(size=4, taps=[3, 0], seed=0b0110)
+        
+        # 8-bit LFSR starting with the same pattern plus zeros
+        lfsr8 = GeneralLFSR(size=8, taps=[7, 0], seed=0b01100000)
+        
+        # The sequences should diverge after a few steps
+        sequence4 = generate_sequence(lfsr4, 5)
+        sequence8 = generate_sequence(lfsr8, 5)
+        
+        # They might start the same but should diverge
+        different = False
+        for i in range(len(sequence4)):
+            if sequence4[i] != sequence8[i]:
+                different = True
+                break
+                
+        self.assertTrue(different)
+
+
+if __name__ == '__main__':
+    unittest.main()
