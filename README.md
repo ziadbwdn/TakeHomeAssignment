@@ -1,4 +1,4 @@
-# LFSR Theory and Implementation
+# Assignment 1: LFSR Theory and Implementation
 
 ## What is an LFSR?
 
@@ -38,3 +38,17 @@ Basic LFSRs are not cryptographically secure on their own because:
 - The sequence is linearly predictable
 
 For cryptographic applications, LFSRs are typically combined with non-linear components or other techniques to increase security.
+
+----
+Assignment 2:  Django Warehouse System
+# Overview
+This documentation provides a comprehensive guide to the Django Warehouse System, a REST API designed to simulate a stock management system for a distribution center. The application allows tracking of inventory items, recording purchase and sale transactions, and generating audit reports that track changes in stock levels over time.
+System Architecture
+The system is built using Django and Django REST Framework (DRF) with a modular approach consisting of four primary modules:
+
+# Items Module: Manages inventory items in the warehouse
+- Purchases Module: Handles stock replenishment through purchase transactions
+- Sells Module: Manages the reduction of stock through sales transactions
+- Reports Module: Generates historical reports of stock changes over time
+
+Each module follows Django's app structure pattern with models, serializers, views, and URL configurations.
